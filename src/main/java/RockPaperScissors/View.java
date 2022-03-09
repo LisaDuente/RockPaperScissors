@@ -18,11 +18,11 @@ public class View implements PropertyChangeListener {
     Controller control;
     //frame and panel
     JFrame frame;
-    JPanel panelMenu;
-    JPanel panelGame;
-    JPanel panelLoad;
-    JPanel panelSave;
-    JPanelBackground test;
+    JPanelBackground panelMenu;
+    JPanelBackground panelGame;
+    JPanelBackground panelLoad;
+    JPanelBackground panelSave;
+
     //buttons
     JButton menuLoad;
     JButton menuPlay;
@@ -66,7 +66,6 @@ public class View implements PropertyChangeListener {
     File background;
     /* TO DO
 
-        - make a cool background
         - erase all methods and classes that are no longer used
         - some funny animations for computer's choice and your own choice
         - look into CSS to see if the frame could look better
@@ -85,39 +84,33 @@ public class View implements PropertyChangeListener {
         this.control = control;
         frame = new JFrame(text);
 
-    //initiate panels
-        panelMenu = new JPanel(null);
-        panelLoad = new JPanel(null);
-        panelGame = new JPanel(null);
-        panelSave = new JPanel(null);
-
-
-    //make a runnable for the background, set the picture and see what else you can do
+    //initiate background panels
         background = new File("src/main/resources/RPS.bmp");
         try {
             this.bg = ImageIO.read(background);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        panelMenu = new JPanelBackground(bg);
+        BackgroundRun run = new BackgroundRun(frame,panelMenu);
 
-        Runnable run = new Runnable() {
-            @Override
-            public void run() {
-                test = new JPanelBackground(bg);
-                test.setLayout(null);
-                test.setBounds(0,0,500,700);
-                JButton testB = new JButton("test");
-                testB.setBounds(100,100,100,25);
-                testB.setBackground(Color.BLUE);
-                testB.setIcon(rck);
-                test.add(testB);
-                frame.add(test);
-            }
-        };
+        panelGame = new JPanelBackground(bg);
+        BackgroundRun run2 = new BackgroundRun(frame,panelGame);
+
+        panelSave = new JPanelBackground(bg);
+        BackgroundRun run3 = new BackgroundRun(frame,panelSave);
+
+        panelLoad = new JPanelBackground(bg);
+        BackgroundRun run4 = new BackgroundRun(frame,panelLoad);
+
         SwingUtilities.invokeLater(run);
+        SwingUtilities.invokeLater(run2);
+        SwingUtilities.invokeLater(run3);
+        SwingUtilities.invokeLater(run4);
 
 
-    //initiate buttons
+
+        //initiate buttons
         menuClose = new JButton("Close");
         menuLoad = new JButton("Load");
         menuPlay = new JButton("Play");
@@ -162,7 +155,7 @@ public class View implements PropertyChangeListener {
         nameInput = new TextField();
 
     //define menu panel
-        panelMenu.setVisible(false);        //take this away after the background test
+        //panelMenu.setVisible(false);        //take this away after the background test
         panelMenu.setBounds(0,0,500,400);
         panelMenu.setBackground(Color.LIGHT_GRAY);
 
