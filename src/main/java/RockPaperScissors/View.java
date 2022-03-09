@@ -10,8 +10,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public class View implements PropertyChangeListener {
 
@@ -44,7 +42,7 @@ public class View implements PropertyChangeListener {
     JLabel head;
     JLabel score;
     JLabel loadStatus;
-    JLabel computer = new JLabel("computer");
+    JLabel computer;
     JLabel you;
     JLabel userInput;
     JLabel computerInput;
@@ -65,7 +63,6 @@ public class View implements PropertyChangeListener {
     // files
     File background;
     /* TO DO
-
         - erase all methods and classes that are no longer used
         - some funny animations for computer's choice and your own choice
         - look into CSS to see if the frame could look better
@@ -110,7 +107,7 @@ public class View implements PropertyChangeListener {
 
 
 
-        //initiate buttons
+    //initiate buttons
         menuClose = new JButton("Close");
         menuLoad = new JButton("Load");
         menuPlay = new JButton("Play");
@@ -126,11 +123,10 @@ public class View implements PropertyChangeListener {
 
 
     //initiate images
-
-        this.nope = new ImageIcon();
-        this.ppr = new ImageIcon("src/main/resources/paper.png");
-        this.scr = new ImageIcon("src/main/resources/Scissor.png");
-        this.rck = new ImageIcon("src/main/resources/Rock.png");
+        nope = new ImageIcon();
+        ppr = new ImageIcon("src/main/resources/paper.png");
+        scr = new ImageIcon("src/main/resources/Scissor.png");
+        rck = new ImageIcon("src/main/resources/Rock.png");
 
     //initiate labels
         head = new JLabel("Welcome to Rock Paper Scissors!");
@@ -143,6 +139,7 @@ public class View implements PropertyChangeListener {
         userWin = new JLabel(("Your wins:" + 0));
         userName = new JLabel("Insert your nickname");
         playerName = new JLabel("Insert your own name");
+        computer = new JLabel("Computer");
 
     //initiate lists
         model = new DefaultListModel<>();
@@ -159,17 +156,22 @@ public class View implements PropertyChangeListener {
         panelMenu.setBounds(0,0,500,400);
         panelMenu.setBackground(Color.LIGHT_GRAY);
 
+        //labels
         head.setBounds(150,25,200,25);
+
+        //buttons
         menuLoad.setBounds(25,300, 75,25);
         menuPlay.setBounds(125,300,75,25);
         newPlayer.setBounds(225,300,100,25);
         menuClose.setBounds(350, 300, 75, 25);
 
+        //action listener
         menuLoad.addActionListener((e) -> { changeToLoad(); fillList();});
         menuPlay.addActionListener(e -> changeToGame());
         newPlayer.addActionListener(e -> changeToSave());
         menuClose.addActionListener(e -> endGame() );
 
+        //enabling
         menuPlay.setEnabled(false);
 
     //define load panel
@@ -177,14 +179,18 @@ public class View implements PropertyChangeListener {
         panelLoad.setBackground(Color.LIGHT_GRAY);
         panelLoad.setVisible(false);
 
+        //labels
+        loadStatus.setBounds(50,10,325,25);
+
         //define scroll panel
         scroll.createHorizontalScrollBar();
         scroll.setBounds(50,50,375,250);
 
+        //buttons
         load.setBounds(100,325,75,25);
-        loadStatus.setBounds(50,10,325,25);
         back1.setBounds (300, 325, 75,25);
 
+        //action listener
         back1.addActionListener(e -> getBack());
         //loads a user and enables the play button
         load.addActionListener( (e) -> {control.loadUser(list.getSelectedValue()); menuPlay.setEnabled(true);});
@@ -194,17 +200,22 @@ public class View implements PropertyChangeListener {
         panelGame.setBackground(Color.LIGHT_GRAY);
         panelGame.setVisible(false);
 
+        //buttons
         rock.setBounds(50,300, 75,25);
         paper.setBounds(150,300,75,25);
         scissors.setBounds(250,300,75,25);
         back.setBounds (350, 300, 75,25);
+
+        //labels
         score.setBounds(150,25,200,25);
         you.setBounds(50, 60, 100, 25);
         computer.setBounds(350, 60, 100, 25);
-        computerInput.setBounds(350, 100, 48,48);
-        userInput.setBounds(50, 100, 48,48);
         userWin.setBounds(50,200,200,25);
         computerWin.setBounds(350,200,200,25);
+
+        //labels displaying pictures
+        computerInput.setBounds(350, 100, 48,48);
+        userInput.setBounds(50, 100, 48,48);
 
         //resets the game for a new player
         back.addActionListener(new ActionListener() {
@@ -233,14 +244,19 @@ public class View implements PropertyChangeListener {
         panelSave.setBackground(Color.LIGHT_GRAY);
         panelSave.setVisible(false);
 
-        userNameInput.setBounds(125, 200, 200, 25);
+        //buttons
         save.setBounds(75, 300, 100, 25);
         back2.setBounds(275, 300, 100, 25);
-        userName.setBounds(125, 170, 200, 25);
-        nameInput.setBounds(125, 80, 200, 25);
+
+        //labels
         playerName.setBounds(125, 50,200,25);
+        userName.setBounds(125, 170, 200, 25);
 
+        //text fields
+        userNameInput.setBounds(125, 200, 200, 25);
+        nameInput.setBounds(125, 80, 200, 25);
 
+        //action listener
         back2.addActionListener(e -> getBack());
         //saves the user in DB and clears all text fields
         save.addActionListener((e) -> {control.savePlayer(userNameInput.getText(), nameInput.getText());
@@ -364,15 +380,11 @@ public class View implements PropertyChangeListener {
                     computerInput.setIcon(nope);
                 }
                 break;
-            case "user":
-                //get the win count from the user object through propertySupport firing?
-                break;
             case "currentUserName":
                 //set the current userName in loadPanel and gamePanel
                 loadStatus.setText(evt.getNewValue().toString());
                 you.setText(evt.getNewValue().toString());
                 break;
-            //here needs to be everything that could change in the model, like computer output, ect
         }
 
 
