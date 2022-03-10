@@ -10,6 +10,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class View implements PropertyChangeListener {
 
@@ -52,19 +53,25 @@ public class View implements PropertyChangeListener {
     JLabel playerName;
     //image Icons
     ImageIcon scr;
+    ImageIcon scrM;
     ImageIcon rck;
+    ImageIcon rckM;
     ImageIcon ppr;
+    ImageIcon pprM;
     ImageIcon nope;
     //buffered Images
     BufferedImage bg;
+    BufferedImage fbg;
     //text fields
     TextField userNameInput;
     TextField nameInput;
     // files
     File background;
+    File fightBG;
+    //fonts
+    Font font;
     /* TO DO
         - erase all methods and classes that are no longer used
-        - some funny animations for computer's choice and your own choice
         - look into CSS to see if the frame could look better
         - save this as an executable
      */
@@ -83,15 +90,17 @@ public class View implements PropertyChangeListener {
 
     //initiate background panels
         background = new File("src/main/resources/RPS.bmp");
+        fightBG = new File("src/main/resources/FigthingBG.png");
         try {
             this.bg = ImageIO.read(background);
+            this.fbg = ImageIO.read(fightBG);
         } catch (IOException e) {
             e.printStackTrace();
         }
         panelMenu = new JPanelBackground(bg);
         BackgroundRun run = new BackgroundRun(frame,panelMenu);
 
-        panelGame = new JPanelBackground(bg);
+        panelGame = new JPanelBackground(fbg);
         BackgroundRun run2 = new BackgroundRun(frame,panelGame);
 
         panelSave = new JPanelBackground(bg);
@@ -105,9 +114,18 @@ public class View implements PropertyChangeListener {
         SwingUtilities.invokeLater(run3);
         SwingUtilities.invokeLater(run4);
 
+        //create font
+        String fName = "src/main/resources/8-bit Arcade Out.ttf";
+        try {
+            GraphicsEnvironment ge =
+                    GraphicsEnvironment.getLocalGraphicsEnvironment();
+            font = Font.createFont(Font.TRUETYPE_FONT, new File(fName)).deriveFont(30f);
+            ge.registerFont(font);
+        } catch (IOException|FontFormatException e) {
+            e.printStackTrace();
+        }
 
-
-    //initiate buttons
+        //initiate buttons
         menuClose = new JButton("Close");
         menuLoad = new JButton("Load");
         menuPlay = new JButton("Play");
@@ -124,19 +142,22 @@ public class View implements PropertyChangeListener {
 
     //initiate images
         nope = new ImageIcon();
-        ppr = new ImageIcon("src/main/resources/paper.png");
-        scr = new ImageIcon("src/main/resources/Scissor.png");
-        rck = new ImageIcon("src/main/resources/Rock.png");
+        pprM = new ImageIcon("src/main/resources/paperMirror.gif");
+        ppr = new ImageIcon("src/main/resources/paper.gif");
+        scr = new ImageIcon("src/main/resources/scissor.gif");
+        scrM = new ImageIcon("src/main/resources/scissorM.gif");
+        rck = new ImageIcon("src/main/resources/rock.gif");
+        rckM = new ImageIcon("src/main/resources/rockM.gif");
 
     //initiate labels
-        head = new JLabel("Welcome to Rock Paper Scissors!");
-        score = new JLabel("Let's begin!");
+        head = new JLabel("Welcome to Rock Paper Scissors");
+        score = new JLabel("Start");
         loadStatus = new JLabel("No Player");
         you = new JLabel("No Player");
         computerInput = new JLabel(nope);
         userInput = new JLabel(nope);
-        computerWin = new JLabel("Computer wins: " + 0);
-        userWin = new JLabel(("Your wins:" + 0));
+        computerWin = new JLabel("wins " + 0);
+        userWin = new JLabel(("wins " + 0));
         userName = new JLabel("Insert your nickname");
         playerName = new JLabel("Insert your own name");
         computer = new JLabel("Computer");
@@ -157,7 +178,8 @@ public class View implements PropertyChangeListener {
         panelMenu.setBackground(Color.LIGHT_GRAY);
 
         //labels
-        head.setBounds(150,25,200,25);
+        head.setBounds(30,25,500,50);
+        head.setFont(font);
 
         //buttons
         menuLoad.setBounds(25,300, 75,25);
@@ -181,6 +203,7 @@ public class View implements PropertyChangeListener {
 
         //labels
         loadStatus.setBounds(50,10,325,25);
+        loadStatus.setFont(font);
 
         //define scroll panel
         scroll.createHorizontalScrollBar();
@@ -207,15 +230,20 @@ public class View implements PropertyChangeListener {
         back.setBounds (350, 300, 75,25);
 
         //labels
-        score.setBounds(150,25,200,25);
-        you.setBounds(50, 60, 100, 25);
-        computer.setBounds(350, 60, 100, 25);
-        userWin.setBounds(50,200,200,25);
-        computerWin.setBounds(350,200,200,25);
+        score.setBounds(210,10,200,25);
+        score.setFont(font);
+        you.setBounds(40, 40, 300, 25);
+        you.setFont(font);
+        computer.setBounds(325, 40, 200, 25);
+        computer.setFont(font);
+        userWin.setBounds(40,230,200,25);
+        userWin.setFont(font);
+        computerWin.setBounds(325,230,250,25);
+        computerWin.setFont(font);
 
         //labels displaying pictures
-        computerInput.setBounds(350, 100, 48,48);
-        userInput.setBounds(50, 100, 48,48);
+        computerInput.setBounds(350, 100, 100,100);
+        userInput.setBounds(50, 100, 100,100);
 
         //resets the game for a new player
         back.addActionListener(new ActionListener() {
@@ -225,19 +253,19 @@ public class View implements PropertyChangeListener {
                 control.resetGame();
                 userInput.setIcon(nope);
                 computerInput.setIcon(nope);
-                score.setText("Let's begin!");
+                score.setText("Start");
             }
         });
         //sets the picture for the inputs and gets the wins from controller
         rock.addActionListener((e) -> {control.playGame("rock");
-                                        computerWin.setText("Computer wins: "+ control.getWinsComputer());
-                                        userWin.setText("Your wins: " + control.getWinsUser());});
+                                        computerWin.setText("wins "+ control.getWinsComputer());
+                                        userWin.setText("wins " + control.getWinsUser());});
         scissors.addActionListener((e) -> {control.playGame("scissors");
-                                            computerWin.setText("Computer wins: "+ control.getWinsComputer());
-                                            userWin.setText("Your wins: " + control.getWinsUser());});
+                                            computerWin.setText("wins "+ control.getWinsComputer());
+                                            userWin.setText("wins " + control.getWinsUser());});
         paper.addActionListener((e) -> {control.playGame("paper");
-                                        computerWin.setText("Computer wins: "+ control.getWinsComputer());
-                                        userWin.setText("Your wins: " + control.getWinsUser());});
+                                        computerWin.setText("wins "+ control.getWinsComputer());
+                                        userWin.setText("wins " + control.getWinsUser());});
 
     //define panelSave
         panelSave.setBounds(0,0,500,400);
@@ -371,11 +399,11 @@ public class View implements PropertyChangeListener {
             case "inputComputer":
                 //set right picture in playPanel
                 if(evt.getNewValue().equals("scissors")){
-                    computerInput.setIcon(scr);
+                    computerInput.setIcon(scrM);
                 }else if(evt.getNewValue().equals("rock")){
-                    computerInput.setIcon(rck);
+                    computerInput.setIcon(rckM);
                 }else if(evt.getNewValue().equals("paper")){
-                    computerInput.setIcon(ppr);
+                    computerInput.setIcon(pprM);
                 }else{
                     computerInput.setIcon(nope);
                 }
