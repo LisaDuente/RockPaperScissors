@@ -10,7 +10,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
 public class View implements PropertyChangeListener {
 
@@ -21,7 +20,6 @@ public class View implements PropertyChangeListener {
     JPanelBackground panelGame;
     JPanelBackground panelLoad;
     JPanelBackground panelSave;
-
     //buttons
     JButton menuLoad;
     JButton menuPlay;
@@ -30,7 +28,7 @@ public class View implements PropertyChangeListener {
     JButton paper;
     JButton scissors;
     JButton load;
-    JButton back;
+    JButton backGame;
     JButton back1;
     JButton back2;
     JButton newPlayer;
@@ -70,6 +68,7 @@ public class View implements PropertyChangeListener {
     File fightBG;
     //fonts
     Font font;
+    Font buttonFont;
     /* TO DO
         - erase all methods and classes that are no longer used
         - look into CSS to see if the frame could look better
@@ -120,7 +119,10 @@ public class View implements PropertyChangeListener {
             GraphicsEnvironment ge =
                     GraphicsEnvironment.getLocalGraphicsEnvironment();
             font = Font.createFont(Font.TRUETYPE_FONT, new File(fName)).deriveFont(30f);
+            buttonFont = Font.createFont(Font.TRUETYPE_FONT, new File(fName)).deriveFont(20f);
             ge.registerFont(font);
+            ge.registerFont(buttonFont);
+
         } catch (IOException|FontFormatException e) {
             e.printStackTrace();
         }
@@ -129,16 +131,34 @@ public class View implements PropertyChangeListener {
         menuClose = new JButton("Close");
         menuLoad = new JButton("Load");
         menuPlay = new JButton("Play");
-        back = new JButton("Back");
+        backGame = new JButton("Back");
+        backGame.setUI(new OwnButtonUI("src/main/resources/customButtonFight.png",
+                "src/main/resources/customButtonFightPressed.png",
+                "src/main/resources/customButtonFightHover.png"));
+        backGame.setBorder(null);
+        backGame.setFont(buttonFont);
         back1 = new JButton("Back");
         back2 = new JButton("Back");
         load = new JButton("Load");
         rock = new JButton("Rock");
+        rock.setUI(new OwnButtonUI("src/main/resources/customButtonFight.png",
+                    "src/main/resources/customButtonFightPressed.png",
+                    "src/main/resources/customButtonFightHover.png"));
+        rock.setBorder(null);
+        rock.setFont(buttonFont);
         paper = new JButton("Paper");
+        paper.setUI(new OwnButtonUI("src/main/resources/customButtonFight.png",
+                "src/main/resources/customButtonFightPressed.png",
+                "src/main/resources/customButtonFightHover.png"));
+        paper.setBorder(null);
+        paper.setFont(buttonFont);
         scissors = new JButton("Scissors");
+        scissors.setUI(new OwnButtonUI("src/main/resources/customButtonFight.png",
+                "src/main/resources/customButtonFightPressed.png",
+                "src/main/resources/customButtonFightHover.png"));
+        scissors.setFont(buttonFont);
         newPlayer = new JButton("New Player");
         save = new JButton("Save");
-
 
     //initiate images
         nope = new ImageIcon();
@@ -224,10 +244,10 @@ public class View implements PropertyChangeListener {
         panelGame.setVisible(false);
 
         //buttons
-        rock.setBounds(50,300, 75,25);
-        paper.setBounds(150,300,75,25);
-        scissors.setBounds(250,300,75,25);
-        back.setBounds (350, 300, 75,25);
+        rock.setBounds(20,300, 100,25);
+        paper.setBounds(130,300,100,25);
+        scissors.setBounds(240,300,100,25);
+        backGame.setBounds (350, 300, 100,25);
 
         //labels
         score.setBounds(210,10,200,25);
@@ -246,7 +266,7 @@ public class View implements PropertyChangeListener {
         userInput.setBounds(50, 100, 100,100);
 
         //resets the game for a new player
-        back.addActionListener(new ActionListener() {
+        backGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 getBack();
@@ -296,7 +316,7 @@ public class View implements PropertyChangeListener {
         panelGame.add(rock);
         panelGame.add(paper);
         panelGame.add(scissors);
-        panelGame.add(back);
+        panelGame.add(backGame);
         panelGame.add(score);
         panelGame.add(you);
         panelGame.add(computer);
