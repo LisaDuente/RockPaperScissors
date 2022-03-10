@@ -9,6 +9,7 @@ public class DBHandler {
 
 
     public void insertUser(String userName, String name){
+
         try{
             String query = "INSERT INTO User VALUES (?, ?, 0, 0);";
             Connection connect = DriverManager.getConnection(URL,USER,PASS);

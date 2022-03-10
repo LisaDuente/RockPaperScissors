@@ -56,7 +56,9 @@ public class Controller {
     }
 
     public void savePlayer(String playerUserName, String playerName){
-        this.model.getSaver().newUser(playerUserName, playerName);
+        if(playerUserName.length()>0 && playerName.length()>0) {
+            this.model.getSaver().newUser(playerUserName, playerName);
+        }
     }
 
     public void updateHashmap(){

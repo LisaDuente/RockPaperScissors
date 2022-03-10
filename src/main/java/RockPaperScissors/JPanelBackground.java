@@ -18,4 +18,5 @@ public class JPanelBackground extends JPanel {
         super.paintComponent(g);
         g.drawImage(background,0,0,this);
     }
+
 }

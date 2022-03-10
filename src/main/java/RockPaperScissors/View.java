@@ -49,6 +49,9 @@ public class View implements PropertyChangeListener {
     JLabel userWin;
     JLabel userName;
     JLabel playerName;
+    JLabel menuRock;
+    JLabel menuPaper;
+    JLabel menuScissors;
     //image Icons
     ImageIcon scr;
     ImageIcon scrM;
@@ -60,12 +63,16 @@ public class View implements PropertyChangeListener {
     //buffered Images
     BufferedImage bg;
     BufferedImage fbg;
+    BufferedImage sbg;
+    BufferedImage lbg;
     //text fields
     TextField userNameInput;
     TextField nameInput;
     // files
     File background;
     File fightBG;
+    File backgroundSave;
+    File backgroundLoad;
     //fonts
     Font font;
     Font buttonFont;
@@ -90,9 +97,13 @@ public class View implements PropertyChangeListener {
     //initiate background panels
         background = new File("src/main/resources/RPS.bmp");
         fightBG = new File("src/main/resources/FigthingBG.png");
+        backgroundSave = new File("src/main/resources/backgroundSave.png");
+        backgroundLoad = new File("src/main/resources/backgroundLoad.png");
         try {
             this.bg = ImageIO.read(background);
             this.fbg = ImageIO.read(fightBG);
+            this.sbg = ImageIO.read(backgroundSave);
+            this.lbg = ImageIO.read(backgroundLoad);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -102,10 +113,10 @@ public class View implements PropertyChangeListener {
         panelGame = new JPanelBackground(fbg);
         BackgroundRun run2 = new BackgroundRun(frame,panelGame);
 
-        panelSave = new JPanelBackground(bg);
+        panelSave = new JPanelBackground(sbg);
         BackgroundRun run3 = new BackgroundRun(frame,panelSave);
 
-        panelLoad = new JPanelBackground(bg);
+        panelLoad = new JPanelBackground(lbg);
         BackgroundRun run4 = new BackgroundRun(frame,panelLoad);
 
         SwingUtilities.invokeLater(run);
@@ -115,11 +126,12 @@ public class View implements PropertyChangeListener {
 
         //create font
         String fName = "src/main/resources/8-bit Arcade Out.ttf";
+        String fName2 = "src/main/resources/8-bit Arcade In.ttf";
         try {
             GraphicsEnvironment ge =
                     GraphicsEnvironment.getLocalGraphicsEnvironment();
             font = Font.createFont(Font.TRUETYPE_FONT, new File(fName)).deriveFont(30f);
-            buttonFont = Font.createFont(Font.TRUETYPE_FONT, new File(fName)).deriveFont(20f);
+            buttonFont = Font.createFont(Font.TRUETYPE_FONT, new File(fName2)).deriveFont(15f);
             ge.registerFont(font);
             ge.registerFont(buttonFont);
 
@@ -127,19 +139,42 @@ public class View implements PropertyChangeListener {
             e.printStackTrace();
         }
 
-        //initiate buttons
+        //initiate buttons and buttonUI
         menuClose = new JButton("Close");
+        menuClose.setUI(new OwnButtonUI("src/main/resources/customButtonFight.png",
+                "src/main/resources/customButtonFightPressed.png",
+                "src/main/resources/customButtonFightHover.png"));
+        menuClose.setFont(buttonFont);
         menuLoad = new JButton("Load");
+        menuLoad.setUI(new OwnButtonUI("src/main/resources/customButtonFight.png",
+                "src/main/resources/customButtonFightPressed.png",
+                "src/main/resources/customButtonFightHover.png"));
+        menuLoad.setFont(buttonFont);
         menuPlay = new JButton("Play");
+        menuPlay.setUI(new OwnButtonUI("src/main/resources/customButtonFight.png",
+                "src/main/resources/customButtonFightPressed.png",
+                "src/main/resources/customButtonFightHover.png"));
+        menuPlay.setFont(buttonFont);
         backGame = new JButton("Back");
         backGame.setUI(new OwnButtonUI("src/main/resources/customButtonFight.png",
                 "src/main/resources/customButtonFightPressed.png",
                 "src/main/resources/customButtonFightHover.png"));
-        backGame.setBorder(null);
         backGame.setFont(buttonFont);
         back1 = new JButton("Back");
+        back1.setUI(new OwnButtonUI("src/main/resources/customButtonFight.png",
+                "src/main/resources/customButtonFightPressed.png",
+                "src/main/resources/customButtonFightHover.png"));
+        back1.setFont(buttonFont);
         back2 = new JButton("Back");
+        back2.setUI(new OwnButtonUI("src/main/resources/customButtonFight.png",
+                "src/main/resources/customButtonFightPressed.png",
+                "src/main/resources/customButtonFightHover.png"));
+        back2.setFont(buttonFont);
         load = new JButton("Load");
+        load.setUI(new OwnButtonUI("src/main/resources/customButtonFight.png",
+                "src/main/resources/customButtonFightPressed.png",
+                "src/main/resources/customButtonFightHover.png"));
+        load.setFont(buttonFont);
         rock = new JButton("Rock");
         rock.setUI(new OwnButtonUI("src/main/resources/customButtonFight.png",
                     "src/main/resources/customButtonFightPressed.png",
@@ -158,7 +193,15 @@ public class View implements PropertyChangeListener {
                 "src/main/resources/customButtonFightHover.png"));
         scissors.setFont(buttonFont);
         newPlayer = new JButton("New Player");
+        newPlayer.setUI(new OwnButtonUI("src/main/resources/customButtonFight.png",
+                "src/main/resources/customButtonFightPressed.png",
+                "src/main/resources/customButtonFightHover.png"));
+        newPlayer.setFont(buttonFont);
         save = new JButton("Save");
+        save.setUI(new OwnButtonUI("src/main/resources/customButtonFight.png",
+                "src/main/resources/customButtonFightPressed.png",
+                "src/main/resources/customButtonFightHover.png"));
+        save.setFont(buttonFont);
 
     //initiate images
         nope = new ImageIcon();
@@ -170,6 +213,9 @@ public class View implements PropertyChangeListener {
         rckM = new ImageIcon("src/main/resources/rockM.gif");
 
     //initiate labels
+        menuPaper = new JLabel(ppr);
+        menuRock = new JLabel(rck);
+        menuScissors = new JLabel(scr);
         head = new JLabel("Welcome to Rock Paper Scissors");
         score = new JLabel("Start");
         loadStatus = new JLabel("No Player");
@@ -179,7 +225,9 @@ public class View implements PropertyChangeListener {
         computerWin = new JLabel("wins " + 0);
         userWin = new JLabel(("wins " + 0));
         userName = new JLabel("Insert your nickname");
+        userName.setFont(buttonFont.deriveFont(30f));
         playerName = new JLabel("Insert your own name");
+        playerName.setFont(buttonFont.deriveFont(30f));
         computer = new JLabel("Computer");
 
     //initiate lists
@@ -198,14 +246,16 @@ public class View implements PropertyChangeListener {
         panelMenu.setBackground(Color.LIGHT_GRAY);
 
         //labels
-        head.setBounds(30,25,500,50);
-        head.setFont(font);
+        menuRock.setBounds(75,150,100,100);
+        menuPaper.setBounds(200,150,100,100);
+        menuScissors.setBounds(325,150,100,100);
+
 
         //buttons
-        menuLoad.setBounds(25,300, 75,25);
-        menuPlay.setBounds(125,300,75,25);
-        newPlayer.setBounds(225,300,100,25);
-        menuClose.setBounds(350, 300, 75, 25);
+        menuLoad.setBounds(30,300, 100,25);
+        menuPlay.setBounds(140,300,100,25);
+        newPlayer.setBounds(250,300,100,25);
+        menuClose.setBounds(360, 300, 100, 25);
 
         //action listener
         menuLoad.addActionListener((e) -> { changeToLoad(); fillList();});
@@ -222,16 +272,17 @@ public class View implements PropertyChangeListener {
         panelLoad.setVisible(false);
 
         //labels
-        loadStatus.setBounds(50,10,325,25);
-        loadStatus.setFont(font);
+        loadStatus.setBounds(150,15,325,40);
+        //loadStatus.setFont(buttonFont.deriveFont(30f));
+        loadStatus.setForeground(Color.WHITE);
 
         //define scroll panel
         scroll.createHorizontalScrollBar();
         scroll.setBounds(50,50,375,250);
 
         //buttons
-        load.setBounds(100,325,75,25);
-        back1.setBounds (300, 325, 75,25);
+        load.setBounds(100,325,100,25);
+        back1.setBounds (275, 325, 100,25);
 
         //action listener
         back1.addActionListener(e -> getBack());
@@ -297,8 +348,8 @@ public class View implements PropertyChangeListener {
         back2.setBounds(275, 300, 100, 25);
 
         //labels
-        playerName.setBounds(125, 50,200,25);
-        userName.setBounds(125, 170, 200, 25);
+        playerName.setBounds(100, 50,300,25);
+        userName.setBounds(100, 170, 300, 25);
 
         //text fields
         userNameInput.setBounds(125, 200, 200, 25);
@@ -334,7 +385,9 @@ public class View implements PropertyChangeListener {
         panelMenu.add(menuPlay);
         panelMenu.add(menuClose);
         panelMenu.add(newPlayer);
-        panelMenu.add(head);
+        panelMenu.add(menuScissors);
+        panelMenu.add(menuPaper);
+        panelMenu.add(menuRock);
 
         panelSave.add(userNameInput);
         panelSave.add(save);
@@ -350,7 +403,7 @@ public class View implements PropertyChangeListener {
         frame.add(panelGame);
         frame.add(panelSave);
 
-        frame.setSize(500,438);
+        frame.setSize(515,438);
         frame.setResizable(false);
         frame.setLayout(null);
         frame.setVisible(true);
