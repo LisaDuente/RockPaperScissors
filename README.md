@@ -11,5 +11,12 @@ Project to connect a database to a  java programm and display everything with a 
 - Add MySQL's JConnector to the dependencies of the project
 
 ## Currently working on:
-- setting a background
-- drawing sprites
+- more tests?
+
+## Have fun!
+
+![rock](https://user-images.githubusercontent.com/88434438/157833353-9ee10ad5-6c4c-4c57-b77a-7d309041894d.gif)
+![paperMirror](https://user-images.githubusercontent.com/88434438/157833243-8f19e2ed-26a5-4ebb-bb11-4d87aecbf3d4.gif)
+![scissor](https://user-images.githubusercontent.com/88434438/157833227-2b922e47-534f-42f0-a075-f031abfa6c0d.gif)
+
+
