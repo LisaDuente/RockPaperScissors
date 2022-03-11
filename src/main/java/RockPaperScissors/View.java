@@ -127,13 +127,12 @@ public class View implements PropertyChangeListener {
         SwingUtilities.invokeLater(run4);
 
         //create font
-        String fName = "src/main/resources/8-bit Arcade Out.ttf";
-        String fName2 = "src/main/resources/8-bit Arcade In.ttf";
+        String fName = "src/main/resources/AlfaSlabOne-Regular.ttf";
         try {
             GraphicsEnvironment ge =
                     GraphicsEnvironment.getLocalGraphicsEnvironment();
-            font = Font.createFont(Font.TRUETYPE_FONT, new File(fName)).deriveFont(30f);
-            buttonFont = Font.createFont(Font.TRUETYPE_FONT, new File(fName2)).deriveFont(15f);
+            font = Font.createFont(Font.TRUETYPE_FONT, new File(fName)).deriveFont(25f);
+            buttonFont = Font.createFont(Font.TRUETYPE_FONT, new File(fName)).deriveFont(15f);
             ge.registerFont(font);
             ge.registerFont(buttonFont);
 
@@ -221,15 +220,16 @@ public class View implements PropertyChangeListener {
         head = new JLabel("Welcome to Rock Paper Scissors");
         score = new JLabel("Start");
         loadStatus = new JLabel("No Player");
+        loadStatus.setFont(buttonFont);
         you = new JLabel("No Player");
         computerInput = new JLabel(nope);
         userInput = new JLabel(nope);
         computerWin = new JLabel("wins " + 0);
         userWin = new JLabel(("wins " + 0));
         userName = new JLabel("Insert your nickname");
-        userName.setFont(buttonFont.deriveFont(30f));
+        userName.setFont(buttonFont.deriveFont(20f));
         playerName = new JLabel("Insert your own name");
-        playerName.setFont(buttonFont.deriveFont(30f));
+        playerName.setFont(buttonFont.deriveFont(20f));
         computer = new JLabel("Computer");
 
     //initiate lists
@@ -237,10 +237,13 @@ public class View implements PropertyChangeListener {
         fillList();
         list = new JList<>(model);
         scroll = new JScrollPane(list);
+        list.setFont(buttonFont);
 
     //initiate text fields
         userNameInput = new TextField();
+        userNameInput.setFont(buttonFont);
         nameInput = new TextField();
+        nameInput.setFont(buttonFont);
 
     //define menu panel
         //panelMenu.setVisible(false);        //take this away after the background test
