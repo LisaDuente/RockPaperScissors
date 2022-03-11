@@ -7,7 +7,7 @@ Project to connect a database to a  java programm and display everything with a 
 ## How to get started
 - import the database dump in MySQl 
 - create a new user in MySQL or use an existing user
-- change the USER and PASS in DBHandler class to your username and Password
+- change the USER and PASS in DBHandler class to your username and password
 - Add MySQL's JConnector to the dependencies of the project
 
 ## Currently working on:
