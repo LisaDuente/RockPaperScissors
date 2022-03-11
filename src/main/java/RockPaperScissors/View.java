@@ -78,7 +78,9 @@ public class View implements PropertyChangeListener {
     Font buttonFont;
     /* TO DO
         - erase all methods and classes that are no longer used
-        - look into CSS to see if the frame could look better
+        - look up some fonts
+        - make everything save (nullexceptions, what if you insert to big strings usw)
+        - check why it doesnt set pictures in gamepanel sometimes
         - save this as an executable
      */
 
@@ -467,7 +469,41 @@ public class View implements PropertyChangeListener {
                 }
                 break;
             case "message":
-                score.setText(evt.getNewValue().toString());
+                if(evt.getNewValue().equals("You won")){
+                    score.setText(evt.getNewValue().toString());
+                    rock.setEnabled(false);
+                    scissors.setEnabled(false);
+                    paper.setEnabled(false);
+                    new Thread(() -> {
+                        try {
+                            Thread.sleep(2000);
+                            score.setText("Start");
+                            rock.setEnabled(true);
+                            scissors.setEnabled(true);
+                            paper.setEnabled(true);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }).start();
+                }else if(evt.getNewValue().equals("You lost")) {
+                    score.setText(evt.getNewValue().toString());
+                    rock.setEnabled(false);
+                    scissors.setEnabled(false);
+                    paper.setEnabled(false);
+                    new Thread(() -> {
+                        try {
+                            Thread.sleep(2000);
+                            score.setText("Start");
+                            rock.setEnabled(true);
+                            scissors.setEnabled(true);
+                            paper.setEnabled(true);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }).start();
+                }else{
+                    score.setText(evt.getNewValue().toString());
+                }
                 break;
             case "inputComputer":
                 //set right picture in playPanel
@@ -485,6 +521,12 @@ public class View implements PropertyChangeListener {
                 //set the current userName in loadPanel and gamePanel
                 loadStatus.setText(evt.getNewValue().toString());
                 you.setText(evt.getNewValue().toString());
+                break;
+            case "WinUser":
+                userWin.setText("wins "+evt.getNewValue());
+                break;
+            case "WinComputer":
+                computerWin.setText("wins "+evt.getNewValue());
                 break;
         }
 

@@ -20,6 +20,15 @@ public class Model {
         this.support = new PropertyChangeSupport(this);
         this.currentUserName = "";
     }
+    public void resetGameStatus(){
+        support.firePropertyChange("WinUser",this.game.getWinUser(),0);
+        support.firePropertyChange("WinComputer",this.game.getWinComputer(),0);
+        this.game.resetGame();
+        //try this
+        setInputUser("");
+        setInputComputer("");
+        setMessage("Start");
+    }
 
     public void addPcl(PropertyChangeListener pcl){
         support.addPropertyChangeListener(pcl);
@@ -77,6 +86,10 @@ public class Model {
     public void setInputComputer(String inputComputer) {
         support.firePropertyChange("inputComputer", this.inputComputer,inputComputer);
         this.inputComputer = inputComputer;
+    }
+
+    public String getError() {
+        return error;
     }
 
     public GameEngine getGame() {

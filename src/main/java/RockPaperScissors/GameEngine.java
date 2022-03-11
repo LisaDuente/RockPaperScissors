@@ -21,12 +21,6 @@ public class GameEngine {
         computer = "";
     }
 
-    public void getInputSpel() {
-        Scanner scanner = new Scanner(System.in);
-        String usersChoice = scanner.next();
-        this.input = usersChoice;
-    }
-
     public void setComputer() {
         this.computer = currentGame.randomizeChoice();
     }
@@ -64,11 +58,6 @@ public class GameEngine {
         this.running = true;
     }
 
-    public String getInput(){
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.next().toLowerCase();
-        return input;
-    }
 
     public boolean getIsMenuRunning() {
         return menuIsRunning;
