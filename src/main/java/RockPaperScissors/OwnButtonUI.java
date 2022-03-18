@@ -10,6 +10,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+//kommentar blabla
+
 public class OwnButtonUI extends BasicButtonUI implements MouseListener {
     BufferedImage buttonImg;
     BufferedImage buttonIdle;
